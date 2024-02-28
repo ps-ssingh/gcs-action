@@ -3,7 +3,7 @@
 function usage_docs {
   echo ""
   echo "You can use this Github Action with:"
-  echo "- uses: convictional/gcp-storage-action@master"
+  echo "- uses: ps-ssingh/gcs-action@v0.1"
   echo "  with:"
   echo "    source_file: ./local_file.txt"
   echo "    destination_file: gs://yourbucket/folder/local_file.txt"
