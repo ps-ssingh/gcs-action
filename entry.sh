@@ -10,8 +10,6 @@ function usage_docs {
   echo "    application_credentials: \${{ secrets.GCP_AUTH }}"
   echo "    project_id: myproject_on_gcp"
   echo ""
-  echo "For more information, please visit: https://github.com/convictional/gcp-storage-action"
-  echo ""
 }
 
 function validate_required_inputs {
