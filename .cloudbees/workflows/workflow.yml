@@ -1,0 +1,47 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: SelfTest
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+
+  build:
+    steps:
+      - name: Git checkout
+        uses: docker://alpine/git:2.43.0
+        run: |
+          set -x
+          git config --global --add safe.directory `pwd`
+          git clone ${{ cloudbees.scm.repositoryUrl }} .
+          git checkout ${{ cloudbees.scm.sha }}
+      - id: test
+        name: Run unit tests
+        uses: docker://golang:1.21
+        run: |
+          go test --cover ./...
+      - name: Configure AWS Credentials
+        uses: cloudbees-io/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ss_aws_access_key_id }}
+          aws-secret-access-key: ${{ secrets.ss_aws_secret_access_key }}
+          aws-region: us-east-1    
+      - id: dockerconfig
+        name: Log in to Amazon ECR
+        uses: cloudbees-io/configure-ecr-credentials@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        uses: cloudbees-io/kaniko@v1
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: custom-action
+          IMAGE_TAG: latest
+        with:
+            dockerfile: Dockerfile
+            context: .
+            destination: 324005994172.dkr.ecr.us-east-1.amazonaws.com/custom-action
+            build-args: BUILDKIT_CONTEXT_KEEP_GIT_DIR=1,BUILDKIT_INLINE_CACHE=1
+            labels: maintainer=Sumeet,version=1.0.0
