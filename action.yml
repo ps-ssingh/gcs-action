@@ -26,7 +26,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout
+    - name: Copy to GCS
       uses: 324005994172.dkr.ecr.us-east-1.amazonaws.com/custom-action:latest
       shell: sh
       run: |
