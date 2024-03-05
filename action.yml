@@ -27,7 +27,7 @@ runs:
       uses: docker://google/cloud-sdk
       shell: bash
       run: |
-        echo "${{ inputs.application_credentials }}" | base64 --decode > gcp-credentials.json
+        echo "${{ inputs.application_credentials }}" > gcp-credentials.json
         echo "Decoded GCP credentials"
 
         #Set GCP Project ID
