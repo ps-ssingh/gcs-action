@@ -49,7 +49,7 @@ Below are the inputs required by the action, with details on their purpose and r
 ```yaml
 steps:
 - name: GCP File Operations
-  uses: your-org/your-repo@version
+  uses: ps-ssingh/gcs-action@v1.0
   with:
     source_file: 'path/to/source'
     destination_file: 'gs://your-bucket/path/to/destination'
