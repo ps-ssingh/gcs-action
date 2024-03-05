@@ -19,6 +19,18 @@ inputs:
   flags:
     description: 'Additional flags to be passed to the gsutil command.'
     default: ''
+  command:
+    description: 'The gsutil command to execute (e.g., cp, rsync).'
+    required: true
+  sync_dir_from:
+    description: 'Directory to sync from. Required if command is rsync.'
+    required: false
+  sync_dir_to:
+    description: 'Directory to sync to. Required if command is rsync.'
+    required: false
+  exclude:
+    description: 'Pattern to exclude files from sync. Used with rsync command.'
+    default: ''
 
 runs:
   using: 'composite'
@@ -32,8 +44,19 @@ runs:
         gcloud auth activate-service-account --key-file="${{ inputs.application_credentials}}"
         gcloud config set project ${{ inputs.project_id }}
 
-        #Transfer Files
-        gsutil ${{ inputs.flags }} cp ${{ inputs.source_file }} ${{ inputs.destination_file }}
+        if [ "${{ inputs.command }}" = "rsync" ]; then
+          gsutil -m rsync -r -c -d -x "${{ inputs.exclude }}" ${{ inputs.sync_dir_from }} ${{ inputs.sync_dir_to }}
+          if [ $? -ne 0 ]; then
+            echo "Syncing failed"
+            exit 1
+          fi
+        elif [ "${{ inputs.command }}" = "cp" ]; then
+          gsutil ${{ inputs.flags }} cp ${{ inputs.source_file }} ${{ inputs.destination_file }}
+        else
+          echo "Unsupported command ${{ inputs.command }}"
+          exit 1
+        fi
+
+        echo "Done."
       env:
         GOOGLE_APPLICATION_CREDENTIALS: gcp-credentials.json
-
