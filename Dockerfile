@@ -2,5 +2,5 @@ FROM google/cloud-sdk:293.0.0-alpine
 
 COPY README.md /
 
-COPY entrypoint.sh /entrypoint.sh
+COPY entry.sh /entry.sh
 ENTRYPOINT ["sh", "/entry.sh"]
