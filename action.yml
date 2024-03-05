@@ -27,11 +27,9 @@ runs:
       uses: docker://google/cloud-sdk
       shell: bash
       run: |
-        echo "${{ inputs.application_credentials }}" > gcp-credentials.json
-        echo "Decoded GCP credentials"
-
+        set -x
         #Set GCP Project ID
-        gcloud auth activate-service-account --key-file=gcp-credentials.json
+        gcloud auth activate-service-account --key-file="${{ inputs.application_credentials}}"
         gcloud config set project ${{ inputs.project_id }}
 
         #Transfer Files
