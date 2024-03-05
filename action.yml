@@ -24,18 +24,21 @@ runs:
   using: 'composite'
   steps:
     - name: Decode GCP Credentials
+      uses: docker://google/cloud-sdk
       shell: bash
       run: |
         echo "${{ inputs.application_credentials }}" | base64 --decode > gcp-credentials.json
         echo "Decoded GCP credentials"
 
     - name: Set GCP Project ID
+      uses: docker://google/cloud-sdk
       shell: bash
       run: |
         gcloud auth activate-service-account --key-file=gcp-credentials.json
         gcloud config set project ${{ inputs.project_id }}
 
     - name: Transfer Files
+      uses: docker://google/cloud-sdk
       shell: bash
       run: |
         gsutil ${{ inputs.flags }} cp ${{ inputs.source_file }} ${{ inputs.destination_file }}
