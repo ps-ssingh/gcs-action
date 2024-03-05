@@ -55,11 +55,6 @@ runs:
           fi
         elif [ "${{ inputs.command }}" = "cp" ]; then
           gsutil ${{ inputs.flags }} cp ${{ inputs.source_file }} ${{ inputs.destination_file }}
-        else
-          echo "Unsupported command ${{ inputs.command }}"
-          exit 1
-        fi
-
-        echo "Done."
+        echo "Done"
       env:
         GOOGLE_APPLICATION_CREDENTIALS: gcp-credentials.json
