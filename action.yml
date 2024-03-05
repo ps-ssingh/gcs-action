@@ -48,7 +48,7 @@ runs:
         gcloud config set project ${{ inputs.project_id }}
 
         if [ "${{ inputs.command }}" = "rsync" ]; then
-          gsutil -m rsync -r -c -d -x "${{ inputs.exclude }}" ${{ inputs.sync_dir_from }} ${{ inputs.sync_dir_to }}
+          gsutil -m rsync -r -c -d -x "${{ inputs.exclude }}" "${{ inputs.sync_dir_from }}" "${{ inputs.sync_dir_to }}"
           if [ $? -ne 0 ]; then
             echo "Syncing failed"
             exit 1
