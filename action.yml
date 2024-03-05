@@ -34,7 +34,7 @@ runs:
         gcloud auth activate-service-account --key-file=gcp-credentials.json
         gcloud config set project ${{ inputs.project_id }}
 
-      #Transfer Files
+        #Transfer Files
         gsutil ${{ inputs.flags }} cp ${{ inputs.source_file }} ${{ inputs.destination_file }}
       env:
         GOOGLE_APPLICATION_CREDENTIALS: gcp-credentials.json
