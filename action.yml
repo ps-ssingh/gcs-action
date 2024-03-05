@@ -45,14 +45,11 @@ runs:
         gcloud config set project ${{ inputs.project_id }}
 
         #Activate Service Account
-        echo "${{ inputs.application_credentials }}" | base64 --decode > gcp-credentials.json
-
-        #gcloud auth activate-service-account --key-file="${{ inputs.application_credentials}}"
-        
+        echo "${{ inputs.application_credentials }}" | base64 --decode > gcp-credentials.json        
         gcloud auth activate-service-account --key-file="gcp-credentials.json"
         
         
-
+        #Start copy operation
         if [ "${{ inputs.command }}" = "rsync" ]; then
           gsutil -m rsync -r -c -d -x "${{ inputs.exclude }}" "${{ inputs.sync_dir_from }}" "${{ inputs.sync_dir_to }}"
             if [ $? -ne 0 ]; then
