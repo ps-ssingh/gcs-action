@@ -31,6 +31,11 @@ inputs:
   exclude:
     description: 'Pattern to exclude files from sync. Used with rsync command.'
     default: ''
+  lifecycle_config_file:
+    description: 'The path to the lifecycle configuration JSON file. Required if command is lifecycle.'
+    required: false
+    default: ''
+
 
 runs:
   using: 'composite'
@@ -62,6 +67,17 @@ runs:
               echo "Copying failed"
               exit 1
             fi
+        elif [ "${{ inputs.command }}" = "lifecycle" ]; then
+          # Ensure lifecycle_config_file is provided
+          if [ -z "${{ inputs.lifecycle_config_file }}" ]; then
+            echo "Lifecycle configuration file path is required for lifecycle command."
+            exit 1
+          fi
+          gsutil lifecycle set "${{ inputs.lifecycle_config_file }}" "${{ inputs.destination_file }}"
+          if [ $? -ne 0 ]; then
+            echo "Setting lifecycle policy failed"
+            exit 1
+          fi
         fi
 
         echo "Done"
