@@ -6,10 +6,10 @@ description: 'Uploads and downloads files to/from Google Cloud Storage.'
 inputs:
   source_file:
     description: 'The file path to be sourced from. Can be a local file or a GCP storage file (gs://).'
-    required: true
+    required: false
   destination_file:
     description: 'The file path to be uploaded to. Can be a local file or a GCP storage file.'
-    required: true
+    required: false
   application_credentials:
     description: 'Base64-encoded IAM credentials for accessing the GCP bucket.'
     required: true
