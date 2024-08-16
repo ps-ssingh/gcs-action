@@ -1,6 +1,6 @@
 # GCP File Operations GitHub Action
 
-This GitHub Action enables file operations between local and Google Cloud Storage (GCS), leveraging `gsutil` commands for operations like copying (`cp`) and synchronizing (`rsync`). It's designed for workflows that require moving or syncing files between GCP buckets or between local storage and GCP.
+This Cloudbees Action enables file operations between local and Google Cloud Storage (GCS), leveraging `gsutil` commands for operations like copying (`cp`) and synchronizing (`rsync`). It's designed for workflows that require moving or syncing files between GCP buckets or between local storage and GCP.
 
 ## Inputs
 
